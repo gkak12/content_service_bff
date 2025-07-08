@@ -100,13 +100,13 @@ subprojects {
 }
 
 // 서브 프로젝트
-project(":bff_admin") {
+project(":service_admin") {
     dependencies {
         compileOnly(project(":module_common"))
     }
 }
 
-project(":bff_user") {
+project(":service_user") {
     dependencies {
         compileOnly(project(":module_common"))
     }
