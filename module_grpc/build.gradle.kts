@@ -11,12 +11,23 @@ java {
     }
 }
 
+val grpcVersion = "1.66.0"
+val grpcKotlinVersion = "1.4.1"
+val protobufVersion = "3.21.12"
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     implementation(project(":module_common"))
+
+    implementation("io.grpc:grpc-kotlin-stub:$grpcKotlinVersion")
+    implementation("io.grpc:grpc-protobuf:$grpcVersion")
+    implementation("io.grpc:grpc-stub:$grpcVersion")
+    implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
+    implementation("com.google.protobuf:protobuf-java:$protobufVersion")
+    implementation("com.google.protobuf:protobuf-java-util:$protobufVersion")
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
