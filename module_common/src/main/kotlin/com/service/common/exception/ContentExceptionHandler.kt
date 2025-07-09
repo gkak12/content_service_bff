@@ -97,7 +97,7 @@ class ContentExceptionHandler {
     @ExceptionHandler(ContentException::class)
     fun handleContentException(ex: ContentException): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ex.status, ex.message ?: "")
+        val response = ErrorResponse(ex.value, ex.message ?: "")
         return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ex.errorStatus)))
     }
 

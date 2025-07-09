@@ -6,36 +6,30 @@ import com.service.common.exception.ContentException
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ErrorResponse(
-    val statusCode: String,
+    val value: String,
     val message: String,
     val detailMessage: List<FieldErrorMessage>? = null
 ) {
     constructor(e: ContentException) : this(
-        statusCode = e.status,
+        value = e.value,
         message = e.message ?: "",
         detailMessage = null
     )
 
     constructor(errorType: ErrorCodeEnum, message: String) : this(
-        statusCode = errorType.value,
+        value = errorType.value,
         message = message,
         detailMessage = null
     )
 
     constructor(errorType: String, message: String) : this(
-        statusCode = errorType,
+        value = errorType,
         message = message,
         detailMessage = null
     )
 
     constructor(errorType: ErrorCodeEnum, message: String, detailMessage: List<FieldErrorMessage>) : this(
-        statusCode = errorType.value,
-        message = message,
-        detailMessage = detailMessage
-    )
-
-    constructor(errorType: String, message: String, detailMessage: List<FieldErrorMessage>) : this(
-        statusCode = errorType,
+        value = errorType.value,
         message = message,
         detailMessage = detailMessage
     )
