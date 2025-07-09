@@ -1,11 +1,11 @@
-package com.service.service_admin
+package com.service.admin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ServiceAdminApplication
+class AdminApplication
 
 fun main(args: Array<String>) {
-    runApplication<ServiceAdminApplication>(*args)
+    runApplication<AdminApplication>(*args)
 }

@@ -1,0 +1,18 @@
+grpc:
+  client:
+    service-account:
+      enableKeepAlive: true
+      negotiationType: plaintext
+      keep-alive-time: 30s
+      keep-alive-timeout: 10s
+      keep-alive-without-calls: false
+      enable-keep-alive: true
+      address: static://localhost:10091
+    service-content:
+      enableKeepAlive: true
+      negotiationType: plaintext
+      keep-alive-time: 30s
+      keep-alive-timeout: 10s
+      keep-alive-without-calls: false
+      enable-keep-alive: true
+      address: static://localhost:10092

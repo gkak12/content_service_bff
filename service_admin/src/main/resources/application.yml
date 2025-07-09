@@ -1,0 +1,8 @@
+server:
+  port: 8081
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    mime-types: application/json
+    min-response-size: 4096
