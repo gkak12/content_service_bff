@@ -29,6 +29,6 @@ kotlin {
 	}
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+tasks.named<Jar>("bootJar") {
+	enabled = false
 }
