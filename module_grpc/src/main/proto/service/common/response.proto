@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package common;
+
+option java_multiple_files = true;
+option java_package = "com.service.common";
+option java_outer_classname = "ResponseProto";
+
+//-----------------------------------
+// common response
+//-----------------------------------
+message Response {
+  string statusCode = 1;
+  string message = 2;
+  string data = 3;
+}

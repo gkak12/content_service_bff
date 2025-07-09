@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package account;
+
+option java_multiple_files = true;
+option java_package = "com.service.account";
+option java_outer_classname = "UserProto";
+
+//-----------------------------------
+// service
+//-----------------------------------
+service GrpcUserService {
+  rpc findUserByName(GrpcUserRequest) returns (GrpcUserResponse);
+}
+
+//-----------------------------------
+// request
+//-----------------------------------
+message GrpcUserRequest {
+  uint64 userSeq = 1;
+  string userId = 2;
+  string userPassword = 3;
+  string userName = 4;
+  string email = 5;
+}
+
+//-----------------------------------
+// response
+//-----------------------------------
+message GrpcUserResponse {
+  uint64 userSeq = 1;
+  string userId = 2;
+  string userPassword = 3;
+  string userName = 4;
+  string email = 5;
+}

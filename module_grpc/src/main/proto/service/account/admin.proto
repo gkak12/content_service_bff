@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package account;
+
+option java_multiple_files = true;
+option java_package = "com.service.account";
+option java_outer_classname = "AdminProto";
+
+//-----------------------------------
+// service
+//-----------------------------------
+service GrpcAdminService {
+  rpc findAdminByName(GrpcAdminRequest) returns (GrpcAdminResponse);
+}
+
+//-----------------------------------
+// request
+//-----------------------------------
+message GrpcAdminRequest {
+  uint64 adminSeq = 1;
+  string adminId = 2;
+  string adminPassword = 3;
+  string adminName = 4;
+  string adminType = 5;
+  string email = 6;
+}
+
+//-----------------------------------
+// response
+//-----------------------------------
+message GrpcAdminResponse {
+  uint64 adminSeq = 1;
+  string adminId = 2;
+  string adminPassword = 3;
+  string adminName = 4;
+  string adminType = 5;
+  string email = 6;
+}
