@@ -8,7 +8,7 @@ import net.devh.boot.grpc.client.inject.GrpcClient
 import org.springframework.stereotype.Service
 
 @Service
-class AdminGrpcClientService {
+class GrpcClientAdminService {
 
     @GrpcClient("admin-service")
     private lateinit var adminServiceChannel: Channel
