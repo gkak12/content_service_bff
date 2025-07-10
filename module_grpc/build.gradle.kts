@@ -32,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    // gRPC & Protobuf
+    // gRPC Client
     implementation("io.grpc:grpc-kotlin-stub:$grpcKotlinVersion")
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
     implementation("io.grpc:grpc-stub:$grpcVersion")
@@ -45,8 +45,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.hubspot.jackson:jackson-datatype-protobuf:0.9.15")
 
-    // gRPC Spring Boot integration
-    implementation("net.devh:grpc-spring-boot-starter:3.1.0.RELEASE")
+    // gRPC Spring Boot Client Only
     implementation("net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE")
 }
 

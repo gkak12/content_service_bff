@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration
 class GrpcClientConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "grpc.client.admin-service")
-    fun adminServiceChannelProperties(): GrpcChannelProperties {
+    @ConfigurationProperties(prefix = "grpc.client.service-account")
+    fun serviceAccounChannelProperties(): GrpcChannelProperties {
         return GrpcChannelProperties()
     }
 }

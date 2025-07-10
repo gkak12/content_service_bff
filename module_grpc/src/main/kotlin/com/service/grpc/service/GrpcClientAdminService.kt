@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 class GrpcClientAdminService {
 
-    @GrpcClient("admin-service")
-    private lateinit var adminServiceChannel: Channel
+    @GrpcClient("service-account")
+    private lateinit var serviceAccountChannel: Channel
 
     private fun adminStub(): GrpcAdminServiceGrpc.GrpcAdminServiceBlockingStub {
-        return GrpcAdminServiceGrpc.newBlockingStub(adminServiceChannel)
+        return GrpcAdminServiceGrpc.newBlockingStub(serviceAccountChannel)
     }
 
     fun findAdminByName(request: GrpcAdminRequest): GrpcAdminResponse {

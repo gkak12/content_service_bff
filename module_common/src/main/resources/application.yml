@@ -1,7 +1,10 @@
 server:
   shutdown: graceful
+
 spring:
+  main:
+    web-application-type: reactive
   lifecycle:
     timeout-per-shutdown-phase: 30m
   config:
-    import: classpath:module-grpc.yml
+    import: classpath:module-grpc.yml,app-admin.yml
