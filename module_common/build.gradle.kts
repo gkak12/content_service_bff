@@ -2,33 +2,14 @@ plugins {
 	kotlin("jvm")
 }
 
-group = "com.service"
-version = "0.0.1-SNAPSHOT"
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
-}
-
-repositories {
-	mavenCentral()
-}
-
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
+	implementation(kotlin("stdlib"))
 }
 
-kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
-	}
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+	enabled = false
 }
-
-tasks.named<Jar>("bootJar") {
+tasks.named("bootRun") {
 	enabled = false
 }
