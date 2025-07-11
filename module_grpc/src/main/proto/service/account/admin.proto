@@ -16,9 +16,9 @@ service GrpcAdminService {
 }
 
 //-----------------------------------
-// request
+// dto
 //-----------------------------------
-message GrpcAdminRequest {
+message GrpcAdminDto {
   uint64 adminSeq = 1;
   string adminId = 2;
   string adminPassword = 3;
@@ -28,13 +28,19 @@ message GrpcAdminRequest {
 }
 
 //-----------------------------------
+// request
+//-----------------------------------
+message GrpcAdminRequest {
+  uint64 adminSeq = 1;
+  string adminId = 2;
+  string adminName = 3;
+  string adminType = 4;
+  string email = 5;
+}
+
+//-----------------------------------
 // response
 //-----------------------------------
 message GrpcAdminResponse {
-  uint64 adminSeq = 1;
-  string adminId = 2;
-  string adminPassword = 3;
-  string adminName = 4;
-  string adminType = 5;
-  string email = 6;
+  repeated GrpcAdminDto dto = 1;
 }
