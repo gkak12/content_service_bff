@@ -51,7 +51,7 @@ subprojects {
         // Spring Boot Starters
         implementation("org.springframework.boot:spring-boot-starter-webflux:$starterVersion")
         implementation("org.springframework.boot:spring-boot-starter-validation:$starterVersion")
-//        implementation("org.springframework.boot:spring-boot-starter-security:$starterVersion")
+        implementation("org.springframework.boot:spring-boot-starter-security:$starterVersion")
 
         // JWT
 //        implementation("io.jsonwebtoken:jjwt-api:$jwtTokenVersion")
