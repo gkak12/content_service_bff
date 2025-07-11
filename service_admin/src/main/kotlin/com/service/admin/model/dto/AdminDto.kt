@@ -1,6 +1,6 @@
-package com.service.admin.domain.dto.response
+package com.service.admin.model.dto
 
-data class AdminDtoResponse (
+data class AdminDto (
     var adminId: String = "",
     var adminPassword: String = "",
     var adminName: String = "",
