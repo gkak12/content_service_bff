@@ -1,5 +1,6 @@
 package com.service.admin
 
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
@@ -9,5 +10,7 @@ import org.springframework.context.annotation.ComponentScan
 class AdminApplication
 
 fun main(args: Array<String>) {
+    val log = LoggerFactory.getLogger(AdminApplication::class.java)
+    log.info("Starting MainApplication...")
     runApplication<AdminApplication>(*args)
 }
