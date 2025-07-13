@@ -18,8 +18,8 @@ class GrpcClientAdminService {
         return GrpcAdminServiceGrpc.newBlockingStub(serviceAccountChannel)
     }
 
-    fun login(protoDto: GrpcAdminProtoDto) {
-        adminStub().login(protoDto)
+    fun login(protoDto: GrpcAdminProtoDto): GrpcAdminResponse {
+        return adminStub().login(protoDto)
     }
 
     fun findAdminByName(request: GrpcAdminRequest): GrpcAdminResponse {

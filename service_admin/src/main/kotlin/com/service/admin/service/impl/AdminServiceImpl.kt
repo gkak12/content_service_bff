@@ -24,12 +24,16 @@ class AdminServiceImpl(
 ) : AdminService {
 
     override fun login(adminLoginDto: RequestUserLoginDto): ResponseJwtTokenDto {
-        grpcClientAdminService.login(
-            GrpcAdminProtoDto.newBuilder()
-                .setAdminId(adminLoginDto.id)
-                .setAdminPassword(adminLoginDto.password)
-                .build()
-        )
+        val response = grpcClientAdminService.login(
+                GrpcAdminProtoDto.newBuilder()
+                    .setAdminId(adminLoginDto.id)
+                    .setAdminPassword(adminLoginDto.password)
+                    .build()
+            )
+
+        if(response.statusCode != "OK"){
+            throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+        }
 
         val userId = adminLoginDto.id
         val accessToken = jwtUtil.createToken(JwtEnums.ACCESS_TYPE.value, userId)
