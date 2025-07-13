@@ -1,6 +1,6 @@
 package com.service.admin.model.mapper
 
-import com.service.account.GrpcAdminDto
+import com.service.account.GrpcAdminProtoDto
 import com.service.admin.model.dto.AdminDto
 import org.mapstruct.*
 
@@ -13,6 +13,6 @@ import org.mapstruct.*
 )
 interface AdminMapper {
 
-    fun toDto(grpcAdmin: GrpcAdminDto): AdminDto
-    fun toProtoDto(adminDto: AdminDto): GrpcAdminDto
+    fun toDto(grpcAdmin: GrpcAdminProtoDto): AdminDto
+    fun toProtoDto(adminDto: AdminDto): GrpcAdminProtoDto
 }

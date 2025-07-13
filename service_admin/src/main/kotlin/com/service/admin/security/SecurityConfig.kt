@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
-import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -17,7 +16,7 @@ class SecurityConfig {
 
     companion object {
         private val AUTH_WHITELIST = arrayOf(
-            "/users/login", "/users/signup", "/api/admin/name"
+            "/api/admin/login", "/api/admin/name"
         )
     }
 

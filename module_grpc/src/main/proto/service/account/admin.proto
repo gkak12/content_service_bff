@@ -12,13 +12,14 @@ option java_outer_classname = "AdminProto";
 // service
 //-----------------------------------
 service GrpcAdminService {
+  rpc login(GrpcAdminProtoDto) returns (GrpcAdminResponse);
   rpc findAdminByName(GrpcAdminRequest) returns (GrpcAdminResponse);
 }
 
 //-----------------------------------
 // dto
 //-----------------------------------
-message GrpcAdminDto {
+message GrpcAdminProtoDto {
   uint64 adminSeq = 1;
   string adminId = 2;
   string adminPassword = 3;
@@ -42,5 +43,7 @@ message GrpcAdminRequest {
 // response
 //-----------------------------------
 message GrpcAdminResponse {
-  repeated GrpcAdminDto dto = 1;
+  string statusCode = 1;
+  string message = 2;
+  repeated GrpcAdminProtoDto dto = 3;
 }

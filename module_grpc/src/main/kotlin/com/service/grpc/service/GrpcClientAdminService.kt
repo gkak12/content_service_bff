@@ -1,5 +1,6 @@
 package com.service.grpc.service
 
+import com.service.account.GrpcAdminProtoDto
 import com.service.account.GrpcAdminRequest
 import com.service.account.GrpcAdminResponse
 import com.service.account.GrpcAdminServiceGrpc
@@ -15,6 +16,10 @@ class GrpcClientAdminService {
 
     private fun adminStub(): GrpcAdminServiceGrpc.GrpcAdminServiceBlockingStub {
         return GrpcAdminServiceGrpc.newBlockingStub(serviceAccountChannel)
+    }
+
+    fun login(protoDto: GrpcAdminProtoDto) {
+        adminStub().login(protoDto)
     }
 
     fun findAdminByName(request: GrpcAdminRequest): GrpcAdminResponse {
