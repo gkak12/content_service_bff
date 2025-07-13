@@ -1,11 +1,13 @@
-package com.service.common.config
+package com.service.admin.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
 
 @Configuration
@@ -13,16 +15,27 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @EnableReactiveMethodSecurity
 class SecurityConfig {
 
+    companion object {
+        private val AUTH_WHITELIST = arrayOf(
+            "/users/login", "/users/signup", "/api/admin/name"
+        )
+    }
+
+    @Bean
+    fun passwordEncoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
+
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        return http
+        http
             .csrf { it.disable() }
+            .cors(Customizer.withDefaults())
             .authorizeExchange {
-                it.pathMatchers("/api/admin/name").permitAll()
+                it.pathMatchers(*AUTH_WHITELIST).permitAll()
                     .pathMatchers("/admin/**").hasRole("ADMIN")
                     .anyExchange().authenticated()
             }
             .httpBasic(Customizer.withDefaults())
-            .build()
+
+        return http.build()
     }
 }

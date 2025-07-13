@@ -54,9 +54,9 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-security:$starterVersion")
 
         // JWT
-//        implementation("io.jsonwebtoken:jjwt-api:$jwtTokenVersion")
-//        implementation("io.jsonwebtoken:jjwt-impl:$jwtTokenVersion")
-//        implementation("io.jsonwebtoken:jjwt-jackson:$jwtTokenVersion")
+        implementation("io.jsonwebtoken:jjwt-api:$jwtTokenVersion")
+        implementation("io.jsonwebtoken:jjwt-impl:$jwtTokenVersion")
+        implementation("io.jsonwebtoken:jjwt-jackson:$jwtTokenVersion")
 
         // Lombok
         compileOnly("org.projectlombok:lombok")

@@ -6,3 +6,7 @@ server:
     enabled: true
     mime-types: application/json
     min-response-size: 4096
+
+jwt:
+  access-token-expiration: 1800000      # 30분(밀리초 단위)
+  refresh-token-expiration: 604800000   # 7일(밀리초 단위)
