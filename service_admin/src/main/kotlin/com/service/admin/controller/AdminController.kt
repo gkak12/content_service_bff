@@ -1,7 +1,7 @@
 package com.service.admin.controller
 
 import com.service.admin.model.dto.AdminDto
-import com.service.admin.model.request.RequestUserLoginDto
+import com.service.admin.model.request.RequestAdminLoginDto
 import com.service.admin.model.response.ResponseJwtTokenDto
 import com.service.admin.service.AdminService
 import jakarta.validation.Valid
@@ -16,7 +16,7 @@ class AdminController (
 ){
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody adminLoginDto: RequestUserLoginDto): Mono<ResponseJwtTokenDto> {
+    fun login(@Valid @RequestBody adminLoginDto: RequestAdminLoginDto): Mono<ResponseJwtTokenDto> {
         return Mono.just(adminService.login(adminLoginDto))
     }
 

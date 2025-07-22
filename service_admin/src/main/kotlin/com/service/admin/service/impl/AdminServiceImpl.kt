@@ -4,7 +4,7 @@ import com.service.account.GrpcAdminProtoDto
 import com.service.account.GrpcAdminRequest
 import com.service.admin.model.dto.AdminDto
 import com.service.admin.model.mapper.AdminMapper
-import com.service.admin.model.request.RequestUserLoginDto
+import com.service.admin.model.request.RequestAdminLoginDto
 import com.service.admin.model.response.ResponseJwtTokenDto
 import com.service.admin.security.JwtUtil
 import com.service.admin.service.AdminService
@@ -23,7 +23,7 @@ class AdminServiceImpl(
     private val jwtUtil: JwtUtil
 ) : AdminService {
 
-    override fun login(adminLoginDto: RequestUserLoginDto): ResponseJwtTokenDto {
+    override fun login(adminLoginDto: RequestAdminLoginDto): ResponseJwtTokenDto {
         val response = grpcClientAdminService.login(
                 GrpcAdminProtoDto.newBuilder()
                     .setAdminId(adminLoginDto.id)
@@ -41,7 +41,10 @@ class AdminServiceImpl(
 
         redisUtil.setRefreshToken(userId+JwtEnums.TOKEN_KEY.value, refreshToken)
 
-        return ResponseJwtTokenDto(accessToken)
+        return ResponseJwtTokenDto(
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
 
     override fun findAdminByName(name: String): List<AdminDto> {
