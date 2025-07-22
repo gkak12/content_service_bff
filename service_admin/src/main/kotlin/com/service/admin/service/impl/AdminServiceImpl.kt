@@ -16,6 +16,7 @@ import com.service.common.exception.ContentException
 import com.service.common.util.RedisUtil
 import com.service.grpc.service.GrpcClientAdminService
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
 class AdminServiceImpl(
@@ -25,58 +26,51 @@ class AdminServiceImpl(
     private val jwtUtil: JwtUtil
 ) : AdminService {
 
-    override fun login(adminLoginDto: RequestAdminLoginDto): ResponseJwtTokenDto {
-        val response = grpcClientAdminService.login(
-                GrpcAdminProtoDto.newBuilder()
-                    .setAdminId(adminLoginDto.id)
-                    .setAdminPassword(adminLoginDto.password)
-                    .build()
-            )
+    override fun login(adminLoginDto: RequestAdminLoginDto): Mono<ResponseJwtTokenDto> {
+        return grpcClientAdminService.login(
+            GrpcAdminProtoDto.newBuilder()
+                .setAdminId(adminLoginDto.id)
+                .setAdminPassword(adminLoginDto.password)
+                .build()
+        ).map { response ->
+            if (response.statusCode != "OK") {
+                throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+            }
 
-        if(response.statusCode != "OK"){
-            throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+            val userId = adminLoginDto.id
+            val accessToken = jwtUtil.createToken(JwtEnums.ACCESS_TYPE.value, userId)
+            val refreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userId)
+
+            redisUtil.setRefreshToken(userId + JwtEnums.TOKEN_KEY.value, refreshToken)
+
+            ResponseJwtTokenDto(accessToken, refreshToken)
         }
-
-        val userId = adminLoginDto.id
-        val accessToken = jwtUtil.createToken(JwtEnums.ACCESS_TYPE.value, userId)
-        val refreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userId)
-
-        redisUtil.setRefreshToken(userId+JwtEnums.TOKEN_KEY.value, refreshToken)
-
-        return ResponseJwtTokenDto(
-            accessToken = accessToken,
-            refreshToken = refreshToken
-        )
     }
 
-    override fun signup(adminSignDto: RequestAdminSignupDto): ResponseSignupDto {
-        val response = grpcClientAdminService.signup(
-                GrpcAdminProtoDto.newBuilder()
-                    .setAdminId(adminSignDto.id)
-                    .setAdminName(adminSignDto.name)
-                    .setAdminPassword(adminSignDto.password)
-                    .setEmail(adminSignDto.email)
-                    .build()
-            )
+    override fun signup(adminSignDto: RequestAdminSignupDto): Mono<ResponseSignupDto> {
+        return grpcClientAdminService.signup(
+            GrpcAdminProtoDto.newBuilder()
+                .setAdminId(adminSignDto.id)
+                .setAdminName(adminSignDto.name)
+                .setAdminPassword(adminSignDto.password)
+                .setEmail(adminSignDto.email)
+                .build()
+        ).map { response ->
+            if (response.statusCode != "OK") {
+                throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+            }
 
-        if(response.statusCode != "OK"){
-            throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+            ResponseSignupDto(message = "${adminSignDto.id} is signed.")
         }
-
-        return ResponseSignupDto(
-            message = "${adminSignDto.id} is singed."
-        )
     }
 
-    override fun findAdminByName(name: String): List<AdminDto> {
-        val list = grpcClientAdminService.findAdminByName(
-                GrpcAdminRequest.newBuilder()
-                    .setAdminName(name)
-                    .build()
-            ).dtoList.stream()
-            .map { adminMapper.toDto(it) }
-            .toList()
-
-        return list
+    override fun findAdminByName(name: String): Mono<List<AdminDto>> {
+        return grpcClientAdminService.findAdminByName(
+            GrpcAdminRequest.newBuilder()
+                .setAdminName(name)
+                .build()
+        ).map { response ->
+            response.dtoList.map { adminMapper.toDto(it) }
+        }
     }
 }

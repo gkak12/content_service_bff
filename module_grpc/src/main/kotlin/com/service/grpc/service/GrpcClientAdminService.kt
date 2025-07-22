@@ -7,6 +7,7 @@ import com.service.account.GrpcAdminServiceGrpc
 import io.grpc.Channel
 import net.devh.boot.grpc.client.inject.GrpcClient
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
 class GrpcClientAdminService {
@@ -14,19 +15,65 @@ class GrpcClientAdminService {
     @GrpcClient("service-account")
     private lateinit var serviceAccountChannel: Channel
 
-    private fun adminStub(): GrpcAdminServiceGrpc.GrpcAdminServiceBlockingStub {
-        return GrpcAdminServiceGrpc.newBlockingStub(serviceAccountChannel)
+    // 논블로킹 stub 생성
+    private fun adminAsyncStub(): GrpcAdminServiceGrpc.GrpcAdminServiceStub {
+        return GrpcAdminServiceGrpc.newStub(serviceAccountChannel)
     }
 
-    fun login(protoDto: GrpcAdminProtoDto): GrpcAdminResponse {
-        return adminStub().login(protoDto)
+    // 로그인 요청 (논블로킹)
+    fun login(protoDto: GrpcAdminProtoDto): Mono<GrpcAdminResponse> {
+        return Mono.create { sink ->
+            adminAsyncStub().login(protoDto, object : io.grpc.stub.StreamObserver<GrpcAdminResponse> {
+                override fun onNext(value: GrpcAdminResponse) {
+                    sink.success(value)  // 응답을 받으면 성공 처리
+                }
+
+                override fun onError(t: Throwable) {
+                    sink.error(t)  // 오류가 발생하면 에러 처리
+                }
+
+                override fun onCompleted() {
+                    // 완료시 후처리
+                }
+            })
+        }
     }
 
-    fun signup(protoDto: GrpcAdminProtoDto): GrpcAdminResponse {
-        return adminStub().signup(protoDto)
+    // 회원가입 요청 (논블로킹)
+    fun signup(protoDto: GrpcAdminProtoDto): Mono<GrpcAdminResponse> {
+        return Mono.create { sink ->
+            adminAsyncStub().signup(protoDto, object : io.grpc.stub.StreamObserver<GrpcAdminResponse> {
+                override fun onNext(value: GrpcAdminResponse) {
+                    sink.success(value)  // 응답을 받으면 성공 처리
+                }
+
+                override fun onError(t: Throwable) {
+                    sink.error(t)  // 오류가 발생하면 에러 처리
+                }
+
+                override fun onCompleted() {
+                    // 완료시 후처리
+                }
+            })
+        }
     }
 
-    fun findAdminByName(request: GrpcAdminRequest): GrpcAdminResponse {
-        return adminStub().findAdminByName(request)
+    // 이름으로 관리자를 조회 (논블로킹)
+    fun findAdminByName(request: GrpcAdminRequest): Mono<GrpcAdminResponse> {
+        return Mono.create { sink ->
+            adminAsyncStub().findAdminByName(request, object : io.grpc.stub.StreamObserver<GrpcAdminResponse> {
+                override fun onNext(value: GrpcAdminResponse) {
+                    sink.success(value)  // 응답을 받으면 성공 처리
+                }
+
+                override fun onError(t: Throwable) {
+                    sink.error(t)  // 오류가 발생하면 에러 처리
+                }
+
+                override fun onCompleted() {
+                    // 완료시 후처리
+                }
+            })
+        }
     }
 }

@@ -8,7 +8,6 @@ import com.service.admin.model.response.ResponseSignupDto
 import com.service.admin.service.AdminService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
@@ -19,16 +18,16 @@ class AdminController (
 
     @PostMapping("/login")
     fun login(@Valid @RequestBody adminLoginDto: RequestAdminLoginDto): Mono<ResponseJwtTokenDto> {
-        return Mono.just(adminService.login(adminLoginDto))
+        return adminService.login(adminLoginDto)
     }
 
     @PostMapping("/signup")
     fun signup(@Valid @RequestBody adminDto: RequestAdminSignupDto): Mono<ResponseSignupDto> {
-        return Mono.just(adminService.signup(adminDto))
+        return adminService.signup(adminDto)
     }
 
     @GetMapping("/name")
-    fun findAdminByName(@RequestParam(value = "name", defaultValue = "") name:String): Flux<AdminDto>{
-        return Flux.fromIterable(adminService.findAdminByName(name))
+    fun findAdminByName(@RequestParam(value = "name", defaultValue = "") name:String): Mono<List<AdminDto>> {
+        return adminService.findAdminByName(name)
     }
 }
