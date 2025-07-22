@@ -16,7 +16,7 @@ class SecurityConfig {
 
     companion object {
         private val AUTH_WHITELIST = arrayOf(
-            "/api/admin/login", "/api/admin/name"
+            "/api/admin/login", "/api/admin/signup"
         )
     }
 

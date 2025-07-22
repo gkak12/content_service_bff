@@ -22,6 +22,10 @@ class GrpcClientAdminService {
         return adminStub().login(protoDto)
     }
 
+    fun signup(protoDto: GrpcAdminProtoDto): GrpcAdminResponse {
+        return adminStub().signup(protoDto)
+    }
+
     fun findAdminByName(request: GrpcAdminRequest): GrpcAdminResponse {
         return adminStub().findAdminByName(request)
     }

@@ -5,7 +5,9 @@ import com.service.account.GrpcAdminRequest
 import com.service.admin.model.dto.AdminDto
 import com.service.admin.model.mapper.AdminMapper
 import com.service.admin.model.request.RequestAdminLoginDto
+import com.service.admin.model.request.RequestAdminSignupDto
 import com.service.admin.model.response.ResponseJwtTokenDto
+import com.service.admin.model.response.ResponseSignupDto
 import com.service.admin.security.JwtUtil
 import com.service.admin.service.AdminService
 import com.service.common.enums.ErrorCodeEnum
@@ -44,6 +46,25 @@ class AdminServiceImpl(
         return ResponseJwtTokenDto(
             accessToken = accessToken,
             refreshToken = refreshToken
+        )
+    }
+
+    override fun signup(adminSignDto: RequestAdminSignupDto): ResponseSignupDto {
+        val response = grpcClientAdminService.signup(
+                GrpcAdminProtoDto.newBuilder()
+                    .setAdminId(adminSignDto.id)
+                    .setAdminName(adminSignDto.name)
+                    .setAdminPassword(adminSignDto.password)
+                    .setEmail(adminSignDto.email)
+                    .build()
+            )
+
+        if(response.statusCode != "OK"){
+            throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+        }
+
+        return ResponseSignupDto(
+            message = "${adminSignDto.id} is singed."
         )
     }
 

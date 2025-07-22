@@ -13,6 +13,7 @@ option java_outer_classname = "AdminProto";
 //-----------------------------------
 service GrpcAdminService {
   rpc login(GrpcAdminProtoDto) returns (GrpcAdminResponse);
+  rpc signup(GrpcAdminProtoDto) returns (GrpcAdminResponse);
   rpc findAdminByName(GrpcAdminRequest) returns (GrpcAdminResponse);
 }
 
