@@ -7,18 +7,21 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.crypto.SecretKey
 
 @Component
 class JwtUtil(
+    @Value("\${jwt.secret}")
+    private val secret: String,
     @Value("\${jwt.access-token-expiration}")
     private val validityAccessTime: Long,
     @Value("\${jwt.refresh-token-expiration}")
     private val validityRefreshTime: Long
 ){
 
-    private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
+    private val secretKey: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
 
     // Access/Refresh Token 생성
     fun createToken(flag:String, protoDto: GrpcAdminProtoDto): String {

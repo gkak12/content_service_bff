@@ -8,5 +8,6 @@ server:
     min-response-size: 4096
 
 jwt:
+  secret: a-string-secret-at-least-256-bits-long  # 비밀키
   access-token-expiration: 1800000      # 30분(밀리초 단위)
   refresh-token-expiration: 604800000   # 7일(밀리초 단위)
