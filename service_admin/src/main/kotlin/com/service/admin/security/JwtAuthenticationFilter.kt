@@ -21,22 +21,26 @@ class JwtAuthenticationFilter(
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val uri = exchange.request.uri.path
 
-        if (uri.startsWith("/users/login") || uri.startsWith("/users/signup") || uri.startsWith("/oauth2/me")) {
+        if (uri.startsWith("/api/admin/login") || uri.startsWith("/api/admin/signup")) {
             return chain.filter(exchange)
         }
 
         return Mono.justOrEmpty(getAccessTokenFromRequest(exchange))
             .flatMap { accessToken ->
-                val userId = jwtUtil.getUsername(accessToken ?: throw IllegalArgumentException("Token is missing"))
+                accessToken ?: throw IllegalArgumentException("Token is missing.")
 
-                // 삭제된 계정인지 확인
-                val userTokenKey = "$userId${JwtEnums.TOKEN_KEY.value}"
+                val adminId = jwtUtil.getAdminId(accessToken)
+                val adminRole = jwtUtil.getAdminRole(accessToken)
+
+                // 로그인 된 계정인지 확인
+                val userTokenKey = "$adminId${JwtEnums.TOKEN_KEY.value}"
+                
                 return@flatMap Mono.justOrEmpty(redisUtil.getRefreshToken(userTokenKey))
-                    .switchIfEmpty(Mono.error(IllegalStateException("삭제된 계정입니다.")))
+                    .switchIfEmpty(Mono.error(IllegalStateException("로그인 되지 않은 계정입니다.")))
                     .flatMap {
-                        if (jwtUtil.validateToken(accessToken, userId)) {
-                            val authorities = listOf(SimpleGrantedAuthority("ROLE_USER"))
-                            val authentication = UsernamePasswordAuthenticationToken(userId, null, authorities)
+                        if (jwtUtil.validateToken(accessToken, adminId, adminRole)) {
+                            val authorities = listOf(SimpleGrantedAuthority(adminRole))
+                            val authentication = UsernamePasswordAuthenticationToken(adminId, null, authorities)
 
                             // 인증 정보 설정
                             return@flatMap chain.filter(exchange)
