@@ -16,12 +16,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @EnableReactiveMethodSecurity
 class SecurityConfig {
 
-    companion object {
-        private val AUTH_WHITELIST = arrayOf(
-            "/api/admin/login", "/api/admin/signup"
-        )
-    }
-
     @Bean
     fun passwordEncoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
 
@@ -37,7 +31,7 @@ class SecurityConfig {
             .cors(Customizer.withDefaults())
             .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .authorizeExchange {
-                it.pathMatchers(*AUTH_WHITELIST).permitAll()
+                it.pathMatchers(*AdminAuthWhitelist.paths).permitAll()
                     .pathMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                     .anyExchange().authenticated()
             }
