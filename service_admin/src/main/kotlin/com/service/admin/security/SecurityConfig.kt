@@ -32,7 +32,7 @@ class SecurityConfig {
             .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .authorizeExchange {
                 it.pathMatchers(*AdminAuthWhitelist.paths).permitAll()
-                    .pathMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                    .pathMatchers("/api/admin/**").hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
                     .anyExchange().authenticated()
             }
             .httpBasic(Customizer.withDefaults())
