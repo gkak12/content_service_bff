@@ -37,11 +37,11 @@ class AdminServiceImpl(
                 throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
             }
 
-            val userId = adminLoginDto.id
-            val accessToken = jwtUtil.createToken(JwtEnums.ACCESS_TYPE.value, userId)
-            val refreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userId)
+            val protoDto = response.dtoList[0]
+            val accessToken = jwtUtil.createToken(JwtEnums.ACCESS_TYPE.value, protoDto)
+            val refreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, protoDto)
 
-            redisUtil.setRefreshToken(userId + JwtEnums.TOKEN_KEY.value, refreshToken)
+            redisUtil.setRefreshToken(protoDto.adminId+JwtEnums.TOKEN_KEY.value, refreshToken)
 
             ResponseJwtTokenDto(accessToken, refreshToken)
         }
