@@ -1,5 +1,6 @@
 package com.service.admin.security
 
+import com.service.common.enums.RoleEnums
 import com.service.common.util.RedisUtil
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -32,7 +33,7 @@ class SecurityConfig {
             .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .authorizeExchange {
                 it.pathMatchers(*AdminAuthWhitelist.paths).permitAll()
-                    .pathMatchers("/api/admin/**").hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
+                    .pathMatchers("/api/admin/**").hasAnyAuthority(RoleEnums.ROLE_SUPER_ADMIN.value, RoleEnums.ROLE_ADMIN.value)
                     .anyExchange().authenticated()
             }
             .httpBasic(Customizer.withDefaults())
