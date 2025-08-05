@@ -2,7 +2,7 @@ package com.service.common.exception
 
 import org.slf4j.LoggerFactory
 import reactor.core.publisher.Mono
-import com.service.common.enums.ErrorCodeEnum
+import com.service.common.enums.ErrorCodeEnums
 import com.service.common.response.ErrorResponse
 import com.service.common.response.ValidationErrorResponse
 import org.springframework.http.HttpStatus
@@ -37,12 +37,12 @@ class ContentExceptionHandler {
         val rootCause = getRootCause(ex)
 
         val response = if (rootCause is ContentException) {
-            ErrorResponse(ErrorCodeEnum.VALIDATION_CHECK, rootCause.message ?: "")
+            ErrorResponse(ErrorCodeEnums.VALIDATION_CHECK, rootCause.message ?: "")
         } else {
-            ErrorResponse(ErrorCodeEnum.VALIDATION_CHECK, "잘못된 형식의 JSON 데이터입니다.")
+            ErrorResponse(ErrorCodeEnums.VALIDATION_CHECK, "잘못된 형식의 JSON 데이터입니다.")
         }
 
-        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnum.VALIDATION_CHECK.status)))
+        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnums.VALIDATION_CHECK.status)))
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class, BindException::class)
@@ -62,35 +62,35 @@ class ContentExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     fun handleMethodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ErrorCodeEnum.VALIDATION_CHECK, "잘못된 enum 값입니다.")
-        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnum.VALIDATION_CHECK.status)))
+        val response = ErrorResponse(ErrorCodeEnums.VALIDATION_CHECK, "잘못된 enum 값입니다.")
+        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnums.VALIDATION_CHECK.status)))
     }
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ErrorCodeEnum.VALIDATION_CHECK, ex.message ?: "")
-        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnum.VALIDATION_CHECK.status)))
+        val response = ErrorResponse(ErrorCodeEnums.VALIDATION_CHECK, ex.message ?: "")
+        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnums.VALIDATION_CHECK.status)))
     }
 
     @ExceptionHandler(AuthenticationException::class)
     fun handleAuthenticationException(ex: AuthenticationException): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ErrorCodeEnum.UNAUTHENTICATED, ErrorCodeEnum.UNAUTHENTICATED.msg)
+        val response = ErrorResponse(ErrorCodeEnums.UNAUTHENTICATED, ErrorCodeEnums.UNAUTHENTICATED.msg)
         return Mono.just(ResponseEntity(response, HttpStatus.UNAUTHORIZED))
     }
 
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAccessDeniedException(ex: AccessDeniedException): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ErrorCodeEnum.PERMISSION_DENIED, ErrorCodeEnum.PERMISSION_DENIED.msg)
-        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnum.PERMISSION_DENIED.status)))
+        val response = ErrorResponse(ErrorCodeEnums.PERMISSION_DENIED, ErrorCodeEnums.PERMISSION_DENIED.msg)
+        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnums.PERMISSION_DENIED.status)))
     }
 
     @ExceptionHandler(MethodNotAllowedException::class)
     fun handleMethodNotAllowedException(ex: MethodNotAllowedException): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ErrorCodeEnum.METHOD_NOT_ALLOWED, ErrorCodeEnum.METHOD_NOT_ALLOWED.msg)
+        val response = ErrorResponse(ErrorCodeEnums.METHOD_NOT_ALLOWED, ErrorCodeEnums.METHOD_NOT_ALLOWED.msg)
         return Mono.just(ResponseEntity(response, HttpStatus.METHOD_NOT_ALLOWED))
     }
 
@@ -104,7 +104,7 @@ class ContentExceptionHandler {
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): Mono<ResponseEntity<ErrorResponse>> {
         log.error(ex.message, ex)
-        val response = ErrorResponse(ErrorCodeEnum.INTERNAL_SERVER_ERROR, ex.message ?: "")
-        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnum.INTERNAL_SERVER_ERROR.status)))
+        val response = ErrorResponse(ErrorCodeEnums.INTERNAL_SERVER_ERROR, ex.message ?: "")
+        return Mono.just(ResponseEntity(response, HttpStatus.valueOf(ErrorCodeEnums.INTERNAL_SERVER_ERROR.status)))
     }
 }

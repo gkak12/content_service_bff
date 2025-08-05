@@ -1,7 +1,7 @@
 package com.service.common.response
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.service.common.enums.ErrorCodeEnum
+import com.service.common.enums.ErrorCodeEnums
 import com.service.common.exception.ContentException
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,7 +16,7 @@ data class ErrorResponse(
         detailMessage = null
     )
 
-    constructor(errorType: ErrorCodeEnum, message: String) : this(
+    constructor(errorType: ErrorCodeEnums, message: String) : this(
         value = errorType.value,
         message = message,
         detailMessage = null
@@ -28,7 +28,7 @@ data class ErrorResponse(
         detailMessage = null
     )
 
-    constructor(errorType: ErrorCodeEnum, message: String, detailMessage: List<FieldErrorMessage>) : this(
+    constructor(errorType: ErrorCodeEnums, message: String, detailMessage: List<FieldErrorMessage>) : this(
         value = errorType.value,
         message = message,
         detailMessage = detailMessage

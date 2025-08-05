@@ -1,6 +1,6 @@
 package com.service.common.enums
 
-enum class ErrorCodeEnum (val value: String, val msg: String, val status: Int) {
+enum class ErrorCodeEnums (val value: String, val msg: String, val status: Int) {
     VALIDATION_CHECK("VALIDATION_CHECK", "검증에 실패하였습니다.", 400),
     UNAUTHENTICATED("UNAUTHENTICATED", "인증되지 않은 사용자입니다.", 401),
     PERMISSION_DENIED("PERMISSION_DENIED", "권한이 없는 사용자입니다.", 403),

@@ -10,7 +10,7 @@ import com.service.admin.model.response.ResponseJwtTokenDto
 import com.service.admin.model.response.ResponseSignupDto
 import com.service.admin.security.JwtUtil
 import com.service.admin.service.AdminService
-import com.service.common.enums.ErrorCodeEnum
+import com.service.common.enums.ErrorCodeEnums
 import com.service.common.enums.JwtEnums
 import com.service.common.exception.ContentException
 import com.service.common.util.RedisUtil
@@ -34,7 +34,7 @@ class AdminServiceImpl(
                 .build()
         ).map { response ->
             if (response.statusCode != "OK") {
-                throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+                throw ContentException(ErrorCodeEnums.INTERNAL_SERVER_ERROR)
             }
 
             val protoDto = response.dtoList[0]
@@ -57,7 +57,7 @@ class AdminServiceImpl(
                 .build()
         ).map { response ->
             if (response.statusCode != "OK") {
-                throw ContentException(ErrorCodeEnum.INTERNAL_SERVER_ERROR)
+                throw ContentException(ErrorCodeEnums.INTERNAL_SERVER_ERROR)
             }
 
             ResponseSignupDto(message = "${adminSignDto.id} is signed.")

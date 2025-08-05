@@ -1,22 +1,22 @@
 package com.service.common.exception
 
-import com.service.common.enums.ErrorCodeEnum
+import com.service.common.enums.ErrorCodeEnums
 
 class ContentException : RuntimeException {
     val value: String
     override val message: String
     val errorStatus: Int
 
-    constructor(errorCodeEnum: ErrorCodeEnum) : super(errorCodeEnum.msg) {
-        this.value = errorCodeEnum.value
-        this.message = errorCodeEnum.msg
-        this.errorStatus = errorCodeEnum.status
+    constructor(errorCodeEnums: ErrorCodeEnums) : super(errorCodeEnums.msg) {
+        this.value = errorCodeEnums.value
+        this.message = errorCodeEnums.msg
+        this.errorStatus = errorCodeEnums.status
     }
 
-    constructor(errorCodeEnum: ErrorCodeEnum, message: String) : super(message) {
-        this.value = errorCodeEnum.value
+    constructor(errorCodeEnums: ErrorCodeEnums, message: String) : super(message) {
+        this.value = errorCodeEnums.value
         this.message = message
-        this.errorStatus = errorCodeEnum.status
+        this.errorStatus = errorCodeEnums.status
     }
 
     constructor(status: String, message: String, errorStatus: Int) : super(message) {
