@@ -15,6 +15,9 @@ service GrpcAdminService {
   rpc login(GrpcAdminProtoDto) returns (GrpcAdminResponse);
   rpc signup(GrpcAdminProtoDto) returns (GrpcAdminResponse);
   rpc findAdminByName(GrpcAdminRequest) returns (GrpcAdminResponse);
+  rpc update(GrpcAdminProtoDto) returns (GrpcAdminResponse);
+  rpc delete(GrpcAdminProtoDto) returns (GrpcAdminResponse);
+  rpc resetPassword(GrpcAdminProtoDto) returns (GrpcAdminResponse);
 }
 
 //-----------------------------------

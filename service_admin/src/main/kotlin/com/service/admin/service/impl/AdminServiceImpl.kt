@@ -5,9 +5,12 @@ import com.service.account.GrpcAdminRequest
 import com.service.admin.model.dto.AdminDto
 import com.service.admin.model.mapper.AdminMapper
 import com.service.admin.model.request.RequestAdminLoginDto
+import com.service.admin.model.request.RequestAdminPasswordDto
 import com.service.admin.model.request.RequestAdminSignupDto
+import com.service.admin.model.request.RequestAdminUpdateDto
 import com.service.admin.model.response.ResponseJwtTokenDto
 import com.service.admin.model.response.ResponseSignupDto
+import com.service.admin.model.response.ResponseAdminDto
 import com.service.admin.security.JwtUtil
 import com.service.admin.service.AdminService
 import com.service.common.enums.ErrorCodeEnums
@@ -71,6 +74,51 @@ class AdminServiceImpl(
                 .build()
         ).map { response ->
             response.dtoList.map { adminMapper.toDto(it) }
+        }
+    }
+
+    override fun update(adminUpdateDto: RequestAdminUpdateDto): Mono<ResponseAdminDto> {
+        return grpcClientAdminService.update(
+            GrpcAdminProtoDto.newBuilder()
+                .setAdminId(adminUpdateDto.adminId)
+                .setAdminName(adminUpdateDto.adminName)
+                .setEmail(adminUpdateDto.email)
+                .build()
+        ).map { response ->
+            if(response.statusCode != "OK"){
+                throw ContentException(ErrorCodeEnums.INTERNAL_SERVER_ERROR)
+            }
+
+            ResponseAdminDto(message = "${adminUpdateDto.adminId} is updated.")
+        }
+    }
+
+    override fun delete(id: String): Mono<ResponseAdminDto> {
+        return grpcClientAdminService.delete(
+            GrpcAdminProtoDto.newBuilder()
+                .setAdminId(id)
+                .build()
+        ).map { response ->
+            if(response.statusCode != "OK"){
+                throw ContentException(ErrorCodeEnums.INTERNAL_SERVER_ERROR)
+            }
+
+            ResponseAdminDto(message = "${id} is deleted.")
+        }
+    }
+
+    override fun resetPassword(adminPasswordDto: RequestAdminPasswordDto): Mono<ResponseAdminDto> {
+        return grpcClientAdminService.resetPassword(
+            GrpcAdminProtoDto.newBuilder()
+                .setAdminId(adminPasswordDto.id)
+                .setAdminPassword(adminPasswordDto.password)
+                .build()
+        ).map { response ->
+            if(response.statusCode != "OK"){
+                throw ContentException(ErrorCodeEnums.INTERNAL_SERVER_ERROR)
+            }
+
+            ResponseAdminDto(message = "${adminPasswordDto.id} password is updated.")
         }
     }
 }

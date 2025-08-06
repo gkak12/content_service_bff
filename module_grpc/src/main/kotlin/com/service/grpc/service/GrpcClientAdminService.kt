@@ -76,4 +76,61 @@ class GrpcClientAdminService {
             })
         }
     }
+
+    // 관리자 수정 (논블로킹)
+    fun update(protoDto: GrpcAdminProtoDto): Mono<GrpcAdminResponse> {
+        return Mono.create { sink ->
+            adminAsyncStub().update(protoDto, object : io.grpc.stub.StreamObserver<GrpcAdminResponse> {
+                override fun onNext(value: GrpcAdminResponse) {
+                    sink.success(value)  // 응답을 받으면 성공 처리
+                }
+
+                override fun onError(t: Throwable) {
+                    sink.error(t)  // 오류가 발생하면 에러 처리
+                }
+
+                override fun onCompleted() {
+                    // 완료시 후처리
+                }
+            })
+        }
+    }
+
+    // 관리자 삭제 (논블로킹)
+    fun delete(protoDto: GrpcAdminProtoDto): Mono<GrpcAdminResponse> {
+        return Mono.create { sink ->
+            adminAsyncStub().delete(protoDto, object : io.grpc.stub.StreamObserver<GrpcAdminResponse> {
+                override fun onNext(value: GrpcAdminResponse) {
+                    sink.success(value)  // 응답을 받으면 성공 처리
+                }
+
+                override fun onError(t: Throwable) {
+                    sink.error(t)  // 오류가 발생하면 에러 처리
+                }
+
+                override fun onCompleted() {
+                    // 완료시 후처리
+                }
+            })
+        }
+    }
+
+    // 관리자 비밀번호 수정 (논블로킹)
+    fun resetPassword(protoDto: GrpcAdminProtoDto): Mono<GrpcAdminResponse> {
+        return Mono.create { sink ->
+            adminAsyncStub().resetPassword(protoDto, object : io.grpc.stub.StreamObserver<GrpcAdminResponse> {
+                override fun onNext(value: GrpcAdminResponse) {
+                    sink.success(value)  // 응답을 받으면 성공 처리
+                }
+
+                override fun onError(t: Throwable) {
+                    sink.error(t)  // 오류가 발생하면 에러 처리
+                }
+
+                override fun onCompleted() {
+                    // 완료시 후처리
+                }
+            })
+        }
+    }
 }
