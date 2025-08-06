@@ -41,8 +41,8 @@ class JwtUtil(
     }
 
     // Token 유효성 검증
-    fun validateToken(token: String, adminId: String, adminType: String): Boolean {
-        return !isTokenExpired(token) && adminId == getAdminId(token) && adminType == getAdminRole(token)
+    fun validateToken(token: String, adminId: String, adminRole: String): Boolean {
+        return !isTokenExpired(token) && adminId == getAdminId(token) && adminRole == getAdminRole(token)
     }
 
     // Token에서 아이디 추출
