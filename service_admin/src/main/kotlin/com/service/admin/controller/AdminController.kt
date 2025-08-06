@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("/api/admin")
-class AdminController (
+class AdminController(
     private val adminService: AdminService
 ){
 
