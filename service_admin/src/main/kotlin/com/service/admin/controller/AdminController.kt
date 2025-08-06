@@ -34,7 +34,7 @@ class AdminController (
         return adminService.findAdminByName(name)
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     fun update(@Valid @RequestBody adminDto: RequestAdminUpdateDto): Mono<ResponseAdminDto> {
         return adminService.update(adminDto)
     }
@@ -44,7 +44,7 @@ class AdminController (
         return adminService.delete(id)
     }
 
-    @PostMapping("/reset-password")
+    @PatchMapping("/reset-password")
     fun resetPassword(@Valid @RequestBody adminPasswordDto: RequestAdminPasswordDto): Mono<ResponseAdminDto> {
         return adminService.resetPassword(adminPasswordDto)
     }
