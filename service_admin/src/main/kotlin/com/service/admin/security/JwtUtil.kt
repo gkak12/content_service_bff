@@ -1,6 +1,6 @@
 package com.service.admin.security
 
-import com.service.account.GrpcAdminProtoDto
+import com.service.admin.model.dto.AdminDto
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -24,9 +24,9 @@ class JwtUtil(
     private val secretKey: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
 
     // Access/Refresh Token 생성
-    fun createToken(flag:String, protoDto: GrpcAdminProtoDto): String {
-        val claims: Claims = Jwts.claims().setSubject(protoDto.adminId) // Token에 사용자 아이디 추가
-        claims["ROLE"] = protoDto.adminType
+    fun createToken(flag:String, dto: AdminDto): String {
+        val claims: Claims = Jwts.claims().setSubject(dto.adminId) // Token에 사용자 아이디 추가
+        claims["ROLE"] = dto.adminType
         val now = Date()
 
         // 토큰 타입에 따라 만료 시간 설정
