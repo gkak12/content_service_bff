@@ -12,7 +12,22 @@ option java_outer_classname = "UserProto";
 // service
 //-----------------------------------
 service GrpcUserService {
+  rpc findUserById(GrpcUserRequest) returns (GrpcUserResponse);
   rpc findUserByName(GrpcUserRequest) returns (GrpcUserResponse);
+  rpc createUser(GrpcUserRequest) returns (GrpcUserResponse);
+}
+
+//-----------------------------------
+// dto
+//-----------------------------------
+message GrpcUserProtoDto {
+  uint64 userSeq = 1;
+  string userId = 2;
+  string userPassword = 3;
+  string userLoginType = 4;
+  string userName = 5;
+  string userEmail = 6;
+  string userAddress = 7;
 }
 
 //-----------------------------------
@@ -22,17 +37,17 @@ message GrpcUserRequest {
   uint64 userSeq = 1;
   string userId = 2;
   string userPassword = 3;
-  string userName = 4;
-  string email = 5;
+  string userLoginType = 4;
+  string userName = 5;
+  string userEmail = 6;
+  string userAddress = 7;
 }
 
 //-----------------------------------
 // response
 //-----------------------------------
 message GrpcUserResponse {
-  uint64 userSeq = 1;
-  string userId = 2;
-  string userPassword = 3;
-  string userName = 4;
-  string email = 5;
+  string statusCode = 1;
+  string message = 2;
+  repeated GrpcUserProtoDto dto = 3;
 }
