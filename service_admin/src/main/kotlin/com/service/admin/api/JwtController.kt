@@ -1,4 +1,4 @@
-package com.service.admin.controller
+package com.service.admin.api
 
 import com.service.admin.model.request.RequestJwtTokenDto
 import com.service.admin.model.response.ResponseJwtTokenDto
