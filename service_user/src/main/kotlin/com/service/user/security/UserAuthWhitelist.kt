@@ -6,6 +6,7 @@ object UserAuthWhitelist {
         "/api/user/signup",
         "/api/user/oauth2/me",
         "/login/oauth2/**",
+        "/oauth2/authorization/**",
         "/api/user/jwt/refresh"
     )
 }
