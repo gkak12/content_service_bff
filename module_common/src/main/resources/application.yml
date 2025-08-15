@@ -1,6 +1,3 @@
-server:
-  shutdown: graceful
-
 spring:
   main:
     web-application-type: reactive
@@ -11,8 +8,15 @@ spring:
       host: 172.27.172.56
       port: 6379
   config:
-    import: classpath:module-grpc.yml,app-admin.yml
+    import: classpath:app-content.yml,module-grpc.yml
 
 jwt:
   access-token-expiration: 1800000      # 30분(밀리초 단위)
   refresh-token-expiration: 604800000   # 7일(밀리초 단위)
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+
+server:
+  shutdown: graceful

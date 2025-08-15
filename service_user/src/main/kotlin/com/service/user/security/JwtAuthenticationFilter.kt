@@ -1,4 +1,4 @@
-package com.service.admin.security
+package com.service.user.security
 
 import com.service.common.enums.JwtEnums
 import com.service.common.util.RedisUtil
@@ -21,7 +21,7 @@ class JwtAuthenticationFilter(
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val uri = exchange.request.uri.path
 
-        if (uri in AdminAuthWhitelist.paths) {
+        if (uri in UserAuthWhitelist.paths) {
             return chain.filter(exchange)
         }
 
@@ -34,7 +34,7 @@ class JwtAuthenticationFilter(
 
                 // 로그인 된 계정인지 확인
                 val userTokenKey = "$adminId${JwtEnums.TOKEN_KEY.value}"
-                
+
                 return@flatMap Mono.justOrEmpty(redisUtil.getRefreshToken(userTokenKey))
                     .switchIfEmpty(Mono.error(IllegalStateException("로그인 되지 않은 계정입니다.")))
                     .flatMap {

@@ -1,0 +1,32 @@
+server:
+  port: 8082
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    mime-types: application/json
+    min-response-size: 4096
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            client-name: naver
+            client-id: ENC(l8HvF1/xCISpDoQWTjyM+yhI9+03S1+syRDScg5CAaM=)
+            client-secret: ENC(D7rqCq/bMR2q61t+k0UizpHik4Mnoa9s)
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            authorization-grant-type: authorization_code
+            scope: name, email
+        provider:
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+
+jwt:
+  secret: a-string-secret-at-least-256-bits-long  # 비밀키
+  access-token-expiration: 1800000      # 30분(밀리초 단위)
+  refresh-token-expiration: 604800000   # 7일(밀리초 단위)

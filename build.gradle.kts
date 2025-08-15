@@ -65,6 +65,9 @@ subprojects {
         // Jasypt
         implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
 
+        // Reactor Core (Mono/Flux)
+        implementation("io.projectreactor:reactor-core")
+
         // Testing
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")

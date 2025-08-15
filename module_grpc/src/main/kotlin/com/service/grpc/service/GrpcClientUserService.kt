@@ -56,9 +56,9 @@ class GrpcClientUserService {
     }
 
     // 사용자 등록 (논블로킹)
-    fun createUser(request: GrpcUserRequest): Mono<GrpcUserResponse> {
+    fun createUser(protoDto: GrpcUserProtoDto): Mono<GrpcUserResponse> {
         return Mono.create{ sink ->
-            userAsyncStub().createUser(request, object: io.grpc.stub.StreamObserver<GrpcUserResponse>{
+            userAsyncStub().createUser(protoDto, object: io.grpc.stub.StreamObserver<GrpcUserResponse>{
                 override fun onNext(value: GrpcUserResponse) {
                     sink.success(value)  // 응답을 받으면 성공 처리
                 }
