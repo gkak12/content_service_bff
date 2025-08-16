@@ -21,7 +21,7 @@ class JwtAuthenticationFilter(
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val uri = exchange.request.uri.path
 
-        if (uri in UserAuthWhitelist.paths) {
+        if (UserAuthWhitelist.paths.any { uri.startsWith(it.removeSuffix("/**")) }) {
             return chain.filter(exchange)
         }
 
