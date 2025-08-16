@@ -5,7 +5,6 @@ import com.service.common.enums.LoginEnums
 import com.service.common.response.JwtResponse
 import com.service.grpc.service.GrpcClientUserService
 import com.service.user.model.mapper.UserMapper
-import com.service.user.oauth2.service.OAuth2Service
 import com.service.user.security.JwtUtil
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
