@@ -32,7 +32,7 @@ class OAuth2AuthenticationSuccessHandler(
         logger.info("email: ${userEmail}")
 
         // 비동기적으로 사용자 정보를 저장한 후 리다이렉트
-        return oAuth2Service.createUser(userEmail, userName)
+        return oAuth2Service.loginUser(userEmail, userName)
             .then(redirectToUserInfo(webFilterExchange.exchange, userEmail))
     }
 

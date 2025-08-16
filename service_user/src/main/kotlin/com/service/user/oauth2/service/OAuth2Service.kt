@@ -39,8 +39,8 @@ class OAuth2Service(
             }
     }
 
-    fun createUser(email: String, name: String): Mono<Void>{
-        return grpcClientUserService.createUser(GrpcUserProtoDto.newBuilder()
+    fun loginUser(email: String, name: String): Mono<Void>{
+        return grpcClientUserService.loginUser(GrpcUserProtoDto.newBuilder()
             .setUserId(email)
             .setUserName(name)
             .setUserLoginType(LoginEnums.NAVER_OAUTH2.value)
