@@ -2,23 +2,22 @@ package com.service.user.oauth2.handler
 
 import com.service.account.GrpcUserProtoDto
 import com.service.common.enums.LoginEnums
-import com.service.common.response.JwtResponse
 import com.service.grpc.service.GrpcClientUserService
 import com.service.user.model.mapper.UserMapper
 import com.service.user.security.JwtUtil
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.security.web.server.WebFilterExchange
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
+import java.net.URI
 import java.util.*
 
 @Component
 class OAuth2AuthenticationSuccessHandler(
-    private val jwtUtil: JwtUtil,
     private val userMapper: UserMapper,
     private val grpcClientUserService: GrpcClientUserService
 ): ServerAuthenticationSuccessHandler {
@@ -47,23 +46,17 @@ class OAuth2AuthenticationSuccessHandler(
             )
             .flatMap { response ->
                 val userDto = userMapper.toDto(response.dtoList[0])
-                val accessToken = jwtUtil.createToken("access", userDto)
-                val refreshToken = jwtUtil.createToken("refresh", userDto)
-                val jwtResponse = JwtResponse(accessToken, refreshToken, "${userDto.userId}: OAuth2 로그인 성공했습니다.")
-
-                // 응답 객체에 직접 JSON 작성
                 val exchange = webFilterExchange.exchange
                 val responseObj = exchange.response
-                val bufferFactory = responseObj.bufferFactory()
 
-                val objectMapper = com.fasterxml.jackson.databind.ObjectMapper()
-                val bytes = objectMapper.writeValueAsBytes(jwtResponse)
-                val buffer = bufferFactory.wrap(bytes)
+                // redirect
+                var userId = Base64.getEncoder().encodeToString(userDto.userId.toByteArray())
+                var userName = Base64.getEncoder().encodeToString(userDto.userName.toByteArray())
+                val uri = "/api/user/oauth2/me/${userId}/${userName}"
+                responseObj.statusCode = HttpStatus.FOUND
+                responseObj.headers.location = URI.create(uri)
 
-                responseObj.headers.contentType = org.springframework.http.MediaType.APPLICATION_JSON
-                responseObj.statusCode = org.springframework.http.HttpStatus.OK
-
-                responseObj.writeWith(Mono.just(buffer))
+                Mono.empty()
             }
     }
 }
