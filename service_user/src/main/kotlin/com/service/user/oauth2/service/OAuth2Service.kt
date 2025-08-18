@@ -1,6 +1,7 @@
 package com.service.user.oauth2.service
 
 import com.service.common.enums.JwtEnums
+import com.service.common.enums.LoginEnums
 import com.service.common.response.JwtResponse
 import com.service.user.model.dto.UserDto
 import com.service.user.security.JwtUtil
@@ -18,12 +19,11 @@ class OAuth2Service(
     private val validityRefreshTime: Long
 ){
 
-    fun createToken(encodedId: String, encodedName: String, response: ServerHttpResponse): Mono<JwtResponse> {
+    fun createToken(encodedId: String, response: ServerHttpResponse): Mono<JwtResponse> {
         val userId = String(Base64.getDecoder().decode(encodedId))
-        val userName = String(Base64.getDecoder().decode(encodedName))
         val userDto = UserDto(
             userId = userId,
-            userName = userName
+            userLoginType = LoginEnums.NAVER_OAUTH2.value
         )
 
         val refreshTokenCookie = ResponseCookie.from("refreshToken", jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto))

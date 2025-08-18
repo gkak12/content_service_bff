@@ -51,8 +51,7 @@ class OAuth2AuthenticationSuccessHandler(
 
                 // redirect
                 var userId = Base64.getEncoder().encodeToString(userDto.userId.toByteArray())
-                var userName = Base64.getEncoder().encodeToString(userDto.userName.toByteArray())
-                val uri = "/api/user/oauth2/me/${userId}/${userName}"
+                val uri = "/api/user/oauth2/me/${userId}"
                 responseObj.statusCode = HttpStatus.FOUND
                 responseObj.headers.location = URI.create(uri)
 
