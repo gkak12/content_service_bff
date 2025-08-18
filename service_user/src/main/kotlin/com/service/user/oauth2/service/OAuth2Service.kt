@@ -14,9 +14,7 @@ import java.util.Base64
 
 @Service
 class OAuth2Service(
-    private val jwtUtil: JwtUtil,
-    @Value("\${jwt.refresh-token-expiration}")
-    private val validityRefreshTime: Long
+    private val jwtUtil: JwtUtil
 ){
 
     fun createToken(encodedId: String, response: ServerHttpResponse): Mono<JwtResponse> {
@@ -26,13 +24,8 @@ class OAuth2Service(
             userLoginType = LoginEnums.NAVER_OAUTH2.value
         )
 
-        val refreshTokenCookie = ResponseCookie.from("refreshToken", jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto))
-            .httpOnly(true)
-//            .secure(true)   // https
-            .path("/")
-            .maxAge(validityRefreshTime/1000)
-            .sameSite("Strict")
-            .build()
+        val refreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto)
+        val refreshTokenCookie = jwtUtil.createRefreshTokenCookie(refreshToken)
 
         response.addCookie(refreshTokenCookie)
 

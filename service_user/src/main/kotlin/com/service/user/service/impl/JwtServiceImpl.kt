@@ -8,31 +8,28 @@ import com.service.user.model.dto.UserDto
 import com.service.user.security.JwtUtil
 import com.service.user.service.JwtService
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
 @Service
 class JwtServiceImpl(
-    private val jwtUtil: JwtUtil,
-    @Value("\${jwt.refresh-token-expiration}")
-    private val validityRefreshTime: Long
+    private val jwtUtil: JwtUtil
 ): JwtService{
 
     override fun refreshToken(exchange: ServerWebExchange): Mono<JwtResponse> {
         val request = exchange.request
         val response = exchange.response
 
-        val refreshToken = request.cookies["refreshToken"]?.firstOrNull()?.value
+        val oldRefreshToken = request.cookies["refreshToken"]?.firstOrNull()?.value
 
-        if(refreshToken.isNullOrBlank()){
+        if(oldRefreshToken.isNullOrBlank()){
             return Mono.error(ContentException(ErrorCodeEnums.NOT_FOUND, "Refresh token is missing."))
         }
 
-        val id = jwtUtil.getAdminId(refreshToken)
-        val role = jwtUtil.getAdminRole(refreshToken)
-        val valid = jwtUtil.validateToken(refreshToken, id, role)
+        val id = jwtUtil.getAdminId(oldRefreshToken)
+        val role = jwtUtil.getAdminRole(oldRefreshToken)
+        val valid = jwtUtil.validateToken(oldRefreshToken, id, role)
 
         if(!valid){
             throw ContentException(ErrorCodeEnums.VALIDATION_CHECK, "Refresh token is not valid.")
@@ -43,13 +40,8 @@ class JwtServiceImpl(
             userLoginType = role
         )
 
-        val refreshTokenCookie = ResponseCookie.from("refreshToken", jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto))
-            .httpOnly(true)
-//            .secure(true)   // https
-            .path("/")
-            .maxAge(validityRefreshTime/1000)
-            .sameSite("Strict")
-            .build()
+        val newRefreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto)
+        val refreshTokenCookie = jwtUtil.createRefreshTokenCookie(newRefreshToken)
 
         response.addCookie(refreshTokenCookie)
 

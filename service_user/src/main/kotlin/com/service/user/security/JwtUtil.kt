@@ -1,11 +1,13 @@
 package com.service.user.security
 
+import com.service.common.enums.JwtEnums
 import com.service.user.model.dto.UserDto
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -74,5 +76,16 @@ class JwtUtil(
             .expiration
 
         return expiration.before(Date())
+    }
+
+    // refresh 토큰 저장하는 쿠키 생성
+    fun createRefreshTokenCookie(refreshToken: String): ResponseCookie {
+        return ResponseCookie.from("refreshToken", refreshToken)
+            .httpOnly(true)
+//            .secure(true)   // https
+            .path("/")
+            .maxAge(validityRefreshTime/1000)   // 초 단위
+            .sameSite("Strict")
+            .build()
     }
 }
