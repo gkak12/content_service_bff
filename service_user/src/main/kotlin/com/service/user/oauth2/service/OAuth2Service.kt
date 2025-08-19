@@ -5,12 +5,10 @@ import com.service.common.enums.LoginEnums
 import com.service.common.response.JwtResponse
 import com.service.user.model.dto.UserDto
 import com.service.user.security.JwtUtil
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.ResponseCookie
 import org.springframework.http.server.reactive.ServerHttpResponse
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
-import java.util.Base64
+import java.util.*
 
 @Service
 class OAuth2Service(
@@ -21,7 +19,7 @@ class OAuth2Service(
         val userId = String(Base64.getDecoder().decode(encodedId))
         val userDto = UserDto(
             userId = userId,
-            userLoginType = LoginEnums.NAVER_OAUTH2.value
+            userType = LoginEnums.NAVER_OAUTH2.value
         )
 
         val refreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto)

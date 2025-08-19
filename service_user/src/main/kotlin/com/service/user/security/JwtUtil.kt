@@ -1,6 +1,5 @@
 package com.service.user.security
 
-import com.service.common.enums.JwtEnums
 import com.service.user.model.dto.UserDto
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -28,7 +27,7 @@ class JwtUtil(
     // Access/Refresh Token 생성
     fun createToken(flag:String, dto: UserDto): String {
         val claims: Claims = Jwts.claims().setSubject(dto.userId) // Token에 사용자 아이디 추가
-        claims["ROLE"] = dto.userLoginType
+        claims["ROLE"] = dto.userType
         val now = Date()
 
         // 토큰 타입에 따라 만료 시간 설정

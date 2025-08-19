@@ -24,7 +24,7 @@ message GrpcUserProtoDto {
   uint64 userSeq = 1;
   string userId = 2;
   string userPassword = 3;
-  string userLoginType = 4;
+  string userType = 4;
   string userName = 5;
   string userEmail = 6;
   string userAddress = 7;
@@ -37,7 +37,7 @@ message GrpcUserRequest {
   uint64 userSeq = 1;
   string userId = 2;
   string userPassword = 3;
-  string userLoginType = 4;
+  string userType = 4;
   string userName = 5;
   string userEmail = 6;
   string userAddress = 7;

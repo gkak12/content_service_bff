@@ -7,7 +7,6 @@ import com.service.common.response.JwtResponse
 import com.service.user.model.dto.UserDto
 import com.service.user.security.JwtUtil
 import com.service.user.service.JwtService
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
@@ -37,7 +36,7 @@ class JwtServiceImpl(
 
         val userDto = UserDto(
             userId = id,
-            userLoginType = role
+            userType = role
         )
 
         val newRefreshToken = jwtUtil.createToken(JwtEnums.REFRESH_TYPE.value, userDto)
