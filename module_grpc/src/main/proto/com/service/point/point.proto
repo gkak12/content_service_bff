@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "com/service/common/pagination.proto";
+
+package account;
+
+option java_multiple_files = true;
+option java_package = "com.service.point";
+option java_outer_classname = "PointProto";
+
+//-----------------------------------
+// service
+//-----------------------------------
+service GrpcPointService {
+  rpc findPointById(GrpcPointRequest) returns (GrpcPointResponse);
+  rpc findCancellationEmoney(GrpcPointRequest) returns (GrpcPointResponse);
+}
+
+//-----------------------------------
+// dto
+//-----------------------------------
+message GrpcPointProtoDto {
+  uint64 pointSeq = 1;
+  string userSeq = 2;
+  string typeSeq = 3;
+  string orderSeq = 4;
+  string amount = 5;
+  string content = 6;
+  string creationDateTime = 7;
+  string expirationDateTime = 8;
+}
+
+//-----------------------------------
+// request
+//-----------------------------------
+message GrpcPointRequest {
+  uint64 pointSeq = 1;
+  string userSeq = 2;
+  string typeSeq = 3;
+  string orderSeq = 4;
+  string amount = 5;
+  string content = 6;
+  string creationDateTime = 7;
+  string expirationDateTime = 8;
+
+  optional common.PaginationRequest paginationRequest = 9;  // 페이징 요청 정보
+}
+
+//-----------------------------------
+// response
+//-----------------------------------
+message GrpcPointResponse {
+  string statusCode = 1;
+  string message = 2;
+  repeated GrpcPointProtoDto dto = 3;
+
+  optional common.PaginationResponse paginationResponse = 4; // 페이징 응답 정보
+}

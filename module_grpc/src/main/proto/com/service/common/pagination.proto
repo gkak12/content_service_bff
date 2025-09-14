@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package common;
+
+option java_multiple_files = true;
+option java_package = "com.service.common";
+option java_outer_classname = "PaginationProto";
+
+message PaginationRequest {
+  optional int32 pageNumber = 1;  // 현재 페이지 번호
+  optional int32 pageSize = 2;    // 페이지당 항목 수
+}
+
+message PaginationResponse {
+  optional int32 totalPages = 1;  // 전체 페이지 수
+  optional int64 totalItems = 2;  // 전체 항목 수
+}
