@@ -22,10 +22,10 @@ service GrpcPointService {
 //-----------------------------------
 message GrpcPointProtoDto {
   uint64 pointSeq = 1;
-  string userSeq = 2;
-  string typeSeq = 3;
-  string orderSeq = 4;
-  string amount = 5;
+  uint64 userSeq = 2;
+  uint64 typeSeq = 3;
+  uint64 orderSeq = 4;
+  uint64 amount = 5;
   string content = 6;
   string creationDateTime = 7;
   string expirationDateTime = 8;
@@ -36,10 +36,10 @@ message GrpcPointProtoDto {
 //-----------------------------------
 message GrpcPointRequest {
   uint64 pointSeq = 1;
-  string userSeq = 2;
-  string typeSeq = 3;
-  string orderSeq = 4;
-  string amount = 5;
+  uint64 userSeq = 2;
+  uint64 typeSeq = 3;
+  uint64 orderSeq = 4;
+  uint64 amount = 5;
   string content = 6;
   string creationDateTime = 7;
   string expirationDateTime = 8;
